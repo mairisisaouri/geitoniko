@@ -9,7 +9,7 @@ export default defineConfig({
   lang: 'el-GR',
   title: 'Γειτονικό',
   titleTemplate: ':title · Γειτονικό',
-  description: 'Μην το πετάς, κάποιος γείτονας το χρειάζεται. Αντικείμενα που χαρίζονται σε Μαρούσι, Βριλήσσια, Μελίσσια, Πεντέλη και Κηφισιά, πάνω στον χάρτη.',
+  description: 'Μην το πετάς, κάποιος γείτονας το χρειάζεται. Αντικείμενα που χαρίζονται σε όλη την Αθήνα, πάνω στον χάρτη.',
   base,
   cleanUrls: true,
   lastUpdated: false,
@@ -20,7 +20,7 @@ export default defineConfig({
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:locale', content: 'el_GR' }],
     ['meta', { property: 'og:title', content: 'Γειτονικό: μην το πετάς, χάρισέ το' }],
-    ['meta', { property: 'og:description', content: 'Αντικείμενα που χαρίζονται σε Μαρούσι, Βριλήσσια, Μελίσσια, Πεντέλη και Κηφισιά, πάνω στον χάρτη.' }],
+    ['meta', { property: 'og:description', content: 'Αντικείμενα που χαρίζονται σε όλη την Αθήνα, πάνω στον χάρτη.' }],
   ],
 
   themeConfig: {
@@ -33,7 +33,7 @@ export default defineConfig({
       { text: 'Newsletter', link: '/newsletter' },
     ],
     footer: {
-      message: `Γειτονικό · Μαρούσι · Βριλήσσια · Μελίσσια · Πεντέλη · Κηφισιά · <a href="${base}aporrito">Απόρρητο</a>`,
+      message: `Γειτονικό · Αθήνα · <a href="${base}aporrito">Απόρρητο</a>`,
       copyright: 'Χάρτες © συντελεστές OpenStreetMap',
     },
     outline: { label: 'Σε αυτή τη σελίδα' },
