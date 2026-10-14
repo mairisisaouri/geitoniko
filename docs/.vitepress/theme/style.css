@@ -1,0 +1,126 @@
+/*
+ * Tailwind χωρίς preflight, ώστε να μη σπάσει το default theme του VitePress.
+ * Τα utilities φορτώνονται χωρίς layer: τα στυλ του VitePress δεν είναι σε layer
+ * και θα «κέρδιζαν» αλλιώς (π.χ. το reset στα <button>).
+ */
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css';
+
+@source '../../';
+
+/* Το VitePress βάζει .dark στο <html> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --vp-c-brand-1: #15803d;
+  --vp-c-brand-2: #166534;
+  --vp-c-brand-3: #15803d;
+  --vp-c-brand-soft: rgba(22, 163, 74, 0.14);
+  --vp-home-hero-name-color: #15803d;
+}
+
+.dark {
+  --vp-c-brand-1: #4ade80;
+  --vp-c-brand-2: #86efac;
+  --vp-c-brand-3: #16a34a;
+  --vp-c-brand-soft: rgba(74, 222, 128, 0.16);
+  --vp-home-hero-name-color: #4ade80;
+}
+
+/* ── Κοινά στοιχεία φορμών ── */
+
+.gk-input {
+  display: block;
+  width: 100%;
+  border: 1px solid #d4d4d8;
+  border-radius: 0.5rem;
+  background: #fff;
+  color: #18181b;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.gk-input:focus {
+  outline: 2px solid #16a34a;
+  outline-offset: 1px;
+  border-color: #16a34a;
+}
+.dark .gk-input {
+  border-color: #52525b;
+  background: #27272a;
+  color: #f4f4f5;
+}
+select.gk-input {
+  appearance: auto;
+}
+.w-auto.gk-input {
+  width: auto;
+}
+
+.gk-label {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--vp-c-text-1);
+  margin-bottom: 0.25rem;
+}
+.gk-sublabel {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--vp-c-text-2);
+  margin-bottom: 0.25rem;
+}
+
+.gk-btn-soft {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  border: 1px solid #d4d4d8;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--vp-c-text-1);
+  text-decoration: none;
+}
+.gk-btn-soft:hover {
+  background: var(--vp-c-bg-soft);
+}
+.gk-btn-soft:disabled {
+  opacity: 0.6;
+}
+.dark .gk-btn-soft {
+  border-color: #52525b;
+}
+
+/* ── Πινέζες χάρτη ── */
+
+.gk-pin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  background: #fff;
+  border: 3px solid #15803d;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  font-size: 17px;
+  line-height: 1;
+}
+.gk-pin > * {
+  transform: rotate(45deg);
+}
+.gk-pin--available { border-color: #15803d; }
+.gk-pin--scheduled { border-color: #0284c7; }
+.gk-pin--stale { border-color: #a1a1aa; opacity: 0.65; }
+.gk-pin--pick { border-color: #dc2626; }
+
+.leaflet-container {
+  font: inherit;
+}
+.leaflet-container a {
+  color: #15803d;
+}
