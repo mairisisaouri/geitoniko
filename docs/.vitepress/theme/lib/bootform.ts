@@ -18,6 +18,8 @@ export interface Item {
   /** Μόνο για χειροκίνητες καταχωρήσεις: από πού προέρχεται η αγγελία */
   source?: string
   sourceUrl?: string
+  /** Αγγελία «χαρίζω» (δεύτερο τμήμα) και όχι αφημένο στον δρόμο */
+  giveaway?: boolean
 }
 
 export interface Story {

@@ -10,6 +10,7 @@ const items = ref<Item[]>([])
 const loading = ref(true)
 const loadError = ref(false)
 
+const section = ref<'street' | 'giveaway'>('street')
 const category = ref('')
 const municipality = ref('')
 const showStale = ref(false)
@@ -28,6 +29,7 @@ const filtered = computed(() =>
   items.value
     .filter(
       (it) =>
+        (section.value === 'giveaway') === !!it.giveaway &&
         (!category.value || it.category === category.value) &&
         (!municipality.value || it.municipality === municipality.value) &&
         (showStale.value || statusOf(it) !== 'stale'),
@@ -201,6 +203,21 @@ onBeforeUnmount(() => {
       🧪 Demo mode: βλέπεις δοκιμαστικές καταχωρήσεις. Οι πραγματικές θα εμφανίζονται μόλις ενεργοποιηθεί το δημόσιο feed του BootForm.
     </p>
 
+    <!-- Τα δύο τμήματα -->
+    <div class="grid grid-cols-2 gap-2">
+      <button
+        v-for="s in ([['street', '🛋️ Αφημένα στον δρόμο'], ['giveaway', '🎁 Χαρίζεται']] as const)"
+        :key="s[0]"
+        type="button"
+        :aria-pressed="section === s[0]"
+        class="rounded-xl px-4 py-3 font-semibold"
+        :class="section === s[0] ? 'bg-green-700 text-white' : 'bg-zinc-100 text-zinc-800 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700'"
+        @click="section = s[0]"
+      >
+        {{ s[1] }}
+      </button>
+    </div>
+
     <!-- Φίλτρα -->
     <div class="flex flex-wrap items-center gap-2">
       <select v-model="category" aria-label="Κατηγορία" class="gk-input w-auto">
@@ -305,16 +322,16 @@ onBeforeUnmount(() => {
 
         <div class="space-y-4 p-5">
           <div>
-            <span class="rounded-full px-2 py-0.5 text-xs font-medium" :class="STATUS_META[statusOf(selected)].badge">
+            <span v-if="!selected.giveaway" class="rounded-full px-2 py-0.5 text-xs font-medium" :class="STATUS_META[statusOf(selected)].badge">
               {{ STATUS_META[statusOf(selected)].label }}
             </span>
             <h2 class="mt-2 text-xl font-bold text-zinc-900 dark:text-zinc-50">{{ selected.title || categoryOf(selected.category).label }}</h2>
-            <p class="text-sm text-zinc-600 dark:text-zinc-400">
+            <p v-if="!selected.giveaway" class="text-sm text-zinc-600 dark:text-zinc-400">
               {{ categoryOf(selected.category).emoji }} {{ categoryOf(selected.category).label }} · {{ selected.municipality }}
             </p>
           </div>
 
-          <dl class="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
+          <dl v-if="!selected.giveaway" class="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
             <template v-if="selected.availableFrom">
               <dt class="text-zinc-500">Διαθέσιμο από</dt>
               <dd class="text-zinc-900 dark:text-zinc-100">{{ formatDateTime(selected.availableFrom) }} ({{ timeAgo(selected.availableFrom) }})</dd>
@@ -333,8 +350,8 @@ onBeforeUnmount(() => {
             v-if="selected.source"
             class="rounded-xl border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-900 dark:border-sky-800 dark:bg-sky-950/40 dark:text-sky-200"
           >
-            <p>📢 Αγγελία από: {{ selected.source }}</p>
-            <p class="mt-1">Για να το κλείσεις, επικοινώνησε μέσω της αρχικής ανάρτησης.</p>
+            <p>📢 Πηγή: {{ selected.source }}</p>
+            <p v-if="selected.giveaway" class="mt-1">Για να το κλείσεις, επικοινώνησε μέσω της αρχικής ανάρτησης.</p>
             <a
               v-if="selected.sourceUrl"
               :href="selected.sourceUrl"
@@ -347,6 +364,7 @@ onBeforeUnmount(() => {
           </div>
 
           <a
+            v-if="!selected.giveaway"
             :href="directionsUrl(selected)"
             target="_blank"
             rel="noopener"
@@ -355,7 +373,7 @@ onBeforeUnmount(() => {
             🧭 Οδηγίες στο Google Maps
           </a>
 
-          <div class="rounded-xl border border-zinc-200 p-3 dark:border-zinc-700">
+          <div v-if="!selected.giveaway" class="rounded-xl border border-zinc-200 p-3 dark:border-zinc-700">
             <p class="mb-2 text-sm font-medium text-zinc-700 dark:text-zinc-300">Πέρασες από εκεί; Ενημέρωσε τους γείτονες:</p>
             <div v-if="!votes[selected.id]" class="grid grid-cols-2 gap-2">
               <button type="button" :disabled="busy" class="gk-btn-soft" @click="vote('up')">👍 Είναι ακόμα εκεί</button>
@@ -374,7 +392,7 @@ onBeforeUnmount(() => {
             <p v-if="actionMsg" class="mt-2 text-sm text-green-800 dark:text-green-300">{{ actionMsg }}</p>
           </div>
 
-          <div class="flex flex-wrap gap-2 text-sm">
+          <div v-if="!selected.giveaway" class="flex flex-wrap gap-2 text-sm">
             <a :href="withBase(`/istories?item=${encodeURIComponent(selected.id)}#grapse`)" class="gk-btn-soft">
               🎉 Το πήρα! Γράψε την ιστορία
             </a>
