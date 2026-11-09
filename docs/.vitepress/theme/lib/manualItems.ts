@@ -68,6 +68,18 @@ export const MANUAL_ITEMS: ManualItem[] = [
     source: 'Facebook · Μόνο χαρίζω',
   },
   {
+    id: 'manual-2026-11-08-11',
+    title: 'Καλύμματα τριθέσιου καναπέ, μπεζ',
+    category: 'home',
+    description: 'Παραλαβή από Νέα Σμύρνη, μόνο χέρι με χέρι, έως την Τετάρτη 11 Νοεμβρίου. Το σημείο είναι κατά προσέγγιση: η αγγελία αναφέρει μόνο Νέα Σμύρνη.',
+    municipality: 'Νέα Σμύρνη',
+    lat: 37.9472,
+    lng: 23.7145,
+    availableFrom: '2026-11-08T13:23:00+02:00',
+    availableUntil: '2026-11-11T23:59:00+02:00',
+    source: 'Facebook · Χαρίζω με ΑΓΑΠΗ ότι δεν χρειάζομαι',
+  },
+  {
     id: 'manual-2026-11-08-10',
     title: 'Γυναικεία μπλούζα',
     category: 'clothes',
