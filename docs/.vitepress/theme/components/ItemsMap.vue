@@ -329,6 +329,23 @@ onBeforeUnmount(() => {
 
           <p v-if="selected.description" class="whitespace-pre-line text-zinc-800 dark:text-zinc-200">{{ selected.description }}</p>
 
+          <div
+            v-if="selected.source"
+            class="rounded-xl border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-900 dark:border-sky-800 dark:bg-sky-950/40 dark:text-sky-200"
+          >
+            <p>📢 Αγγελία από: {{ selected.source }}</p>
+            <p class="mt-1">Για να το κλείσεις, επικοινώνησε μέσω της αρχικής ανάρτησης.</p>
+            <a
+              v-if="selected.sourceUrl"
+              :href="selected.sourceUrl"
+              target="_blank"
+              rel="noopener"
+              class="mt-2 inline-block font-semibold underline"
+            >
+              Δες την ανάρτηση →
+            </a>
+          </div>
+
           <a
             :href="directionsUrl(selected)"
             target="_blank"

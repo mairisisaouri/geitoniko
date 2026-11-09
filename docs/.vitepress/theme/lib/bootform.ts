@@ -1,4 +1,5 @@
 import { BOOTFORM, isPlaceholder } from './config'
+import { manualItems, isManualId } from './manualItems'
 
 export interface Item {
   id: string
@@ -14,6 +15,9 @@ export interface Item {
   photo: string | null
   up: number
   down: number
+  /** Μόνο για χειροκίνητες καταχωρήσεις: από πού προέρχεται η αγγελία */
+  source?: string
+  sourceUrl?: string
 }
 
 export interface Story {
@@ -109,9 +113,9 @@ function toStory(raw: any): Story {
 }
 
 export async function loadItems(): Promise<Item[]> {
-  if (isFeedDemo(BOOTFORM.itemsFormId)) return demoItems()
+  if (isFeedDemo(BOOTFORM.itemsFormId)) return [...manualItems(), ...demoItems()]
   const raw = await fetchFeed(BOOTFORM.itemsFormId)
-  return raw.map(toItem).filter((i): i is Item => i !== null)
+  return [...manualItems(), ...raw.map(toItem).filter((i): i is Item => i !== null)]
 }
 
 export async function loadStories(): Promise<Story[]> {
@@ -141,7 +145,7 @@ export async function react(
   submissionId: string,
   type: 'up' | 'down',
 ): Promise<Record<string, number> | null> {
-  if (isFeedDemo(formId)) return null
+  if (isFeedDemo(formId) || isManualId(submissionId)) return null
   const res = await fetch(
     `${BOOTFORM.base}/forms/${encodeURIComponent(formId)}/feed/${encodeURIComponent(submissionId)}/react`,
     { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type }) },
@@ -152,7 +156,7 @@ export async function react(
 }
 
 export async function report(formId: string, submissionId: string): Promise<void> {
-  if (isFeedDemo(formId)) return
+  if (isFeedDemo(formId) || isManualId(submissionId)) return
   const res = await fetch(
     `${BOOTFORM.base}/forms/${encodeURIComponent(formId)}/feed/${encodeURIComponent(submissionId)}/report`,
     { method: 'POST' },
