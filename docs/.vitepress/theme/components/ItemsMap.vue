@@ -222,6 +222,20 @@ onBeforeUnmount(() => {
       </button>
     </div>
 
+    <!-- Κανόνες και πρόστιμα για ό,τι βγαίνει στο πεζοδρόμιο -->
+    <div
+      v-if="SHOW_STREET && section === 'street'"
+      class="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-950 dark:border-amber-700 dark:bg-amber-950/40 dark:text-amber-100"
+    >
+      <p class="font-semibold">🚛 Βγάζεις κάτι στον δρόμο; Κλείσε πρώτα ραντεβού με τον δήμο.</p>
+      <ul class="mt-1 list-disc space-y-0.5 pl-5">
+        <li>Βγάλ' το μόνο την ημέρα της αποκομιδής, χωρίς να κλείνει πεζοδρόμιο και ράμπες.</li>
+        <li>Ογκώδη στο πεζοδρόμιο χωρίς ραντεβού φέρνουν <strong>πρόστιμο</strong>, που μπορεί να φτάσει τις εκατοντάδες ευρώ.</li>
+        <li>Η αποκομιδή με ραντεβού είναι δωρεάν ή κοστίζει λίγα ευρώ.</li>
+      </ul>
+      <a :href="withBase('/pos-leitourgei#prin')" class="mt-1 inline-block font-medium text-green-800 underline dark:text-green-300">Κανόνες, πρόστιμα και τηλέφωνα ανά δήμο</a>
+    </div>
+
     <!-- Φίλτρα -->
     <div class="flex flex-wrap items-center gap-2">
       <select v-model="category" aria-label="Κατηγορία" class="gk-input w-auto">
