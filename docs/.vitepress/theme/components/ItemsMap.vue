@@ -2,7 +2,7 @@
 import { ref, computed, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
 import type * as Leaflet from 'leaflet'
 import { withBase } from 'vitepress'
-import { BOOTFORM, CATEGORIES, MUNICIPALITIES, AREAS, MAP, categoryOf } from '../lib/config'
+import { BOOTFORM, CATEGORIES, MUNICIPALITIES, AREAS, MAP, SHOW_STREET, categoryOf } from '../lib/config'
 import { loadItems, react, report, loadVotes, saveVote, isFeedDemo, type Item } from '../lib/bootform'
 import { statusOf, STATUS_META, timeAgo, formatDateTime } from '../lib/status'
 
@@ -10,7 +10,11 @@ const items = ref<Item[]>([])
 const loading = ref(true)
 const loadError = ref(false)
 
-const section = ref<'street' | 'giveaway'>('street')
+const section = ref<'street' | 'giveaway'>(SHOW_STREET ? 'street' : 'giveaway')
+
+/** Σε ποιο τμήμα ανήκει μια καταχώρηση (βλ. SHOW_STREET στο config.ts) */
+const inSection = (it: Item) =>
+  SHOW_STREET ? (section.value === 'giveaway') === !!it.giveaway : !!it.giveaway || !it.id.startsWith('street-')
 const category = ref('')
 const municipality = ref('')
 const showStale = ref(false)
@@ -29,7 +33,7 @@ const filtered = computed(() =>
   items.value
     .filter(
       (it) =>
-        (section.value === 'giveaway') === !!it.giveaway &&
+        inSection(it) &&
         (!category.value || it.category === category.value) &&
         (!municipality.value || it.municipality === municipality.value) &&
         (showStale.value || statusOf(it) !== 'stale'),
@@ -204,7 +208,7 @@ onBeforeUnmount(() => {
     </p>
 
     <!-- Τα δύο τμήματα -->
-    <div class="grid grid-cols-2 gap-2">
+    <div v-if="SHOW_STREET" class="grid grid-cols-2 gap-2">
       <button
         v-for="s in ([['street', '🛋️ Αφημένα στον δρόμο'], ['giveaway', '🎁 Χαρίζεται']] as const)"
         :key="s[0]"

@@ -30,6 +30,14 @@ export const CONTACT_EMAIL = 'PLACEHOLDER@geitoniko.gr'
 
 export const isPlaceholder = (v: string) => v.startsWith('PLACEHOLDER')
 
+/**
+ * Το τμήμα «Αφημένα στον δρόμο». Όσο είναι false, ο χάρτης δείχνει μόνο το
+ * «Χαρίζεται»: κρύβονται τα κουμπιά των τμημάτων και οι χειροκίνητες
+ * καταχωρήσεις `street-…`, ενώ ό,τι έρχεται από τη φόρμα «Αφήνω κάτι»
+ * εμφανίζεται στο «Χαρίζεται». Όλος ο κώδικας μένει: true για να ξαναβγεί.
+ */
+export const SHOW_STREET = false
+
 /** Μετά από πόσες ώρες μια καταχώρηση θεωρείται «ίσως έχει φύγει» */
 export const STALE_HOURS = 48
 
