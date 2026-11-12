@@ -18,6 +18,8 @@ const municipality = ref('')
 const location = ref<{ lat: number; lng: number } | null>(null)
 const availableFrom = ref(toLocalInput(new Date()))
 const availableUntil = ref('')
+const pickupBooked = ref(false)
+const pickupDate = ref('')
 const consent = ref(false)
 const honeypot = ref('')
 
@@ -33,6 +35,8 @@ const missing = computed(() => {
   if (!municipality.value) m.push('περιοχή')
   if (!location.value) m.push('σημείο στον χάρτη')
   if (!availableFrom.value) m.push('ώρα')
+  if (!pickupBooked.value) m.push('ραντεβού αποκομιδής με τον δήμο')
+  if (!pickupDate.value) m.push('ημέρα αποκομιδής')
   if (!consent.value) m.push('αποδοχή κανόνων')
   return m
 })
@@ -58,6 +62,9 @@ async function submit() {
   fd.append('lng', String(location.value!.lng))
   fd.append('available_from', new Date(availableFrom.value).toISOString())
   if (availableUntil.value) fd.append('available_until', new Date(availableUntil.value).toISOString())
+  // Μόνο για τον έλεγχο πριν την έγκριση: να μη γίνουν δημόσια πεδία στο feed του BootForm
+  fd.append('pickup_booked', 'yes')
+  fd.append('pickup_date', pickupDate.value)
   fd.append(BOOTFORM.honeypotField, honeypot.value)
   try {
     await submitForm(BOOTFORM.itemsFormId, fd)
@@ -158,6 +165,22 @@ async function submit() {
           <label for="until" class="gk-sublabel">Μέχρι (προαιρετικά)</label>
           <input id="until" v-model="availableUntil" type="datetime-local" class="gk-input" />
         </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="space-y-3">
+      <legend class="gk-label">5. Ραντεβού με τον δήμο *</legend>
+      <p class="text-sm text-zinc-600 dark:text-zinc-400">
+        Ό,τι βγαίνει στο πεζοδρόμιο δηλώνεται πρώτα στον δήμο, αλλιώς υπάρχει πρόστιμο.
+        <a :href="withBase('/pos-leitourgei#prin')" target="_blank" class="font-medium text-green-700 underline dark:text-green-400">Δες πώς κλείνεις ραντεβού</a>.
+      </p>
+      <label class="flex items-start gap-3 text-sm text-zinc-700 dark:text-zinc-300">
+        <input v-model="pickupBooked" type="checkbox" class="mt-0.5 h-4 w-4 shrink-0 accent-green-700" />
+        <span>Έχω κλείσει ραντεβού αποκομιδής ογκωδών με τον δήμο μου.</span>
+      </label>
+      <div class="sm:w-1/2">
+        <label for="pickup" class="gk-sublabel">Ημέρα που έρχεται ο δήμος *</label>
+        <input id="pickup" v-model="pickupDate" type="date" class="gk-input" />
       </div>
     </fieldset>
 
