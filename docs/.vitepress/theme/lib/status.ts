@@ -12,6 +12,8 @@ export const STATUS_META: Record<Status, { label: string; badge: string }> = {
 export function statusOf(it: Item, now = Date.now()): Status {
   if (it.availableFrom && +it.availableFrom > now) return 'scheduled'
   if (it.availableUntil && +it.availableUntil < now) return 'stale'
+  // Μετά την ημέρα αποκομιδής το έχει πάρει ο δήμος
+  if (it.pickupDate && +it.pickupDate + 24 * 3600e3 < now) return 'stale'
   const since = +(it.availableFrom ?? it.createdAt)
   if (now - since > STALE_HOURS * 3600e3) return 'stale'
   if (it.down >= it.up + 2) return 'stale'
@@ -37,3 +39,8 @@ const dtf = new Intl.DateTimeFormat('el-GR', {
 })
 
 export const formatDateTime = (d: Date) => dtf.format(d)
+
+/** Μόνο ημερομηνία (π.χ. η ημέρα αποκομιδής, που έρχεται ως «2026-11-13») */
+const df = new Intl.DateTimeFormat('el-GR', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' })
+
+export const formatDate = (d: Date) => df.format(d)

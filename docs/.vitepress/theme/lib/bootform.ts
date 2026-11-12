@@ -11,6 +11,8 @@ export interface Item {
   lng: number
   availableFrom: Date | null
   availableUntil: Date | null
+  /** Η ημέρα που έρχεται ο δήμος για αποκομιδή (μόνο από τη φόρμα) */
+  pickupDate?: Date | null
   createdAt: Date
   photo: string | null
   up: number
@@ -93,6 +95,7 @@ function toItem(raw: any): Item | null {
     lng,
     availableFrom: toDate(f.available_from),
     availableUntil: toDate(f.available_until),
+    pickupDate: toDate(f.pickup_date),
     createdAt: toDate(raw.created_at) ?? new Date(),
     photo: fileUrl(raw, 'photo'),
     up: reactionCount(raw, 'up'),

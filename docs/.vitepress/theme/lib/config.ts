@@ -13,7 +13,7 @@ export const BOOTFORM = {
   /** Φόρμα «Ιστορίες» (με ενεργό Moderated Content Feed) */
   storiesFormId: 'PLACEHOLDER_STORIES_FORM_ID',
   /** Όνομα του honeypot πεδίου από το snippet του BootForm */
-  honeypotField: '_honeypot',
+  honeypotField: 'honeypot',
   /**
    * true όταν το Moderated Content Feed είναι ενεργό (θέλει πλάνο Pro).
    * Όσο είναι false, ο χάρτης δείχνει demo δεδομένα, αλλά οι φόρμες στέλνουν κανονικά.

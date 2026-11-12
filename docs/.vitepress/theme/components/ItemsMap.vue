@@ -4,7 +4,7 @@ import type * as Leaflet from 'leaflet'
 import { withBase } from 'vitepress'
 import { BOOTFORM, CATEGORIES, MUNICIPALITIES, AREAS, MAP, SHOW_STREET, categoryOf } from '../lib/config'
 import { loadItems, react, report, loadVotes, saveVote, isFeedDemo, type Item } from '../lib/bootform'
-import { statusOf, STATUS_META, timeAgo, formatDateTime } from '../lib/status'
+import { statusOf, STATUS_META, timeAgo, formatDateTime, formatDate } from '../lib/status'
 
 const items = ref<Item[]>([])
 const loading = ref(true)
@@ -343,6 +343,10 @@ onBeforeUnmount(() => {
             <template v-if="selected.availableUntil">
               <dt class="text-zinc-500">Μέχρι</dt>
               <dd class="text-zinc-900 dark:text-zinc-100">{{ formatDateTime(selected.availableUntil) }}</dd>
+            </template>
+            <template v-if="selected.pickupDate">
+              <dt class="text-zinc-500">🚛 Ο δήμος το παίρνει</dt>
+              <dd class="font-semibold text-zinc-900 dark:text-zinc-100">{{ formatDate(selected.pickupDate) }}</dd>
             </template>
             <dt class="text-zinc-500">Ενημερώσεις</dt>
             <dd class="text-zinc-900 dark:text-zinc-100">👍 {{ selected.up }} ακόμα εκεί · 👎 {{ selected.down }} λείπουν κάποια</dd>

@@ -62,7 +62,7 @@ async function submit() {
   fd.append('lng', String(location.value!.lng))
   fd.append('available_from', new Date(availableFrom.value).toISOString())
   if (availableUntil.value) fd.append('available_until', new Date(availableUntil.value).toISOString())
-  // Μόνο για τον έλεγχο πριν την έγκριση: να μη γίνουν δημόσια πεδία στο feed του BootForm
+  // pickup_date είναι δημόσιο πεδίο στο feed: οι γείτονες βλέπουν μέχρι πότε θα είναι εκεί
   fd.append('pickup_booked', 'yes')
   fd.append('pickup_date', pickupDate.value)
   fd.append(BOOTFORM.honeypotField, honeypot.value)
@@ -181,6 +181,7 @@ async function submit() {
       <div class="sm:w-1/2">
         <label for="pickup" class="gk-sublabel">Ημέρα που έρχεται ο δήμος *</label>
         <input id="pickup" v-model="pickupDate" type="date" class="gk-input" />
+        <p class="mt-1 text-xs text-zinc-500">Φαίνεται στον χάρτη, για να ξέρουν οι γείτονες μέχρι πότε θα είναι εκεί.</p>
       </div>
     </fieldset>
 
