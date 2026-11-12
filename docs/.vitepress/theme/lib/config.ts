@@ -36,7 +36,7 @@ export const isPlaceholder = (v: string) => v.startsWith('PLACEHOLDER')
  * καταχωρήσεις `street-…`, ενώ ό,τι έρχεται από τη φόρμα «Αφήνω κάτι»
  * εμφανίζεται στο «Χαρίζεται». Όλος ο κώδικας μένει: true για να ξαναβγεί.
  */
-export const SHOW_STREET = false
+export const SHOW_STREET = true
 
 /** Μετά από πόσες ώρες μια καταχώρηση θεωρείται «ίσως έχει φύγει» */
 export const STALE_HOURS = 48
