@@ -314,7 +314,7 @@ onBeforeUnmount(() => {
     <!-- Λεπτομέρειες καταχώρησης -->
     <div
       v-if="selected"
-      class="fixed inset-0 z-[100] flex items-end justify-center bg-black/50 sm:items-center sm:p-4"
+      class="fixed inset-0 z-[100] flex items-end justify-center bg-amber-900/20 sm:items-center sm:p-4"
       @click.self="close"
     >
       <div
@@ -331,7 +331,7 @@ onBeforeUnmount(() => {
           <button
             type="button"
             aria-label="Κλείσιμο"
-            class="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-lg text-white hover:bg-black/80"
+            class="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-lg text-zinc-700 shadow hover:bg-white"
             @click="close"
           >
             ✕

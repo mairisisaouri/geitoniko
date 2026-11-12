@@ -12,11 +12,22 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --vp-c-brand-1: #15803d;
-  --vp-c-brand-2: #166534;
-  --vp-c-brand-3: #15803d;
-  --vp-c-brand-soft: rgba(22, 163, 74, 0.14);
-  --vp-home-hero-name-color: #15803d;
+  --vp-c-brand-1: #16a34a;
+  --vp-c-brand-2: #15803d;
+  --vp-c-brand-3: #16a34a;
+  --vp-c-brand-soft: rgba(34, 197, 94, 0.16);
+  --vp-home-hero-name-color: #16a34a;
+  /* Φωτεινό, ζεστό φόντο αντί για λευκό-γκρι */
+  --vp-c-bg: #fffdf6;
+  --vp-c-bg-alt: #fff8e7;
+  --vp-c-bg-soft: #fff3d6;
+  --vp-nav-bg-color: #fffdf6;
+  --vp-c-text-1: #2b2b2b;
+  --vp-c-text-2: #5b5b5b;
+}
+
+body {
+  background: linear-gradient(180deg, #fffdf6 0%, #f3fbe9 100%) fixed;
 }
 
 .dark {

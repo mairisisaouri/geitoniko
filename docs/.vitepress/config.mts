@@ -13,10 +13,12 @@ export default defineConfig({
   base,
   cleanUrls: true,
   lastUpdated: false,
+  // Πάντα φωτεινό θέμα: χωρίς σκούρο (dark) mode και χωρίς τον διακόπτη του
+  appearance: false,
 
   head: [
     ['link', { rel: 'icon', type: 'image/svg+xml', href: `${base}favicon.svg` }],
-    ['meta', { name: 'theme-color', content: '#15803d' }],
+    ['meta', { name: 'theme-color', content: '#22c55e' }],
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:locale', content: 'el_GR' }],
     ['meta', { property: 'og:title', content: 'Γειτονικό: μην το πετάς, χάρισέ το' }],
