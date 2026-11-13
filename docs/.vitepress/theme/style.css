@@ -95,6 +95,21 @@ select.gk-input {
   color: var(--vp-c-text-1);
   text-decoration: none;
 }
+/* Κουμπιά «Μοιράσου» (το χρώμα του κάθε app μπαίνει με class bg-[…]) */
+.gk-share {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  font-weight: 600;
+  color: #fff !important;
+  text-decoration: none !important;
+}
+.gk-share:hover {
+  filter: brightness(0.92);
+}
+
 .gk-btn-soft:hover {
   background: var(--vp-c-bg-soft);
 }

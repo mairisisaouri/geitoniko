@@ -155,9 +155,43 @@ async function markGone() {
   }
 }
 
-async function share() {
+// ── Μοιράσου ──────────────────────────────────────────────────
+
+/** Καθαρό link για μία αγγελία (χωρίς φίλτρα ή άλλα κομμάτια του URL) */
+const itemUrl = (it: Item) => `${location.origin}${withBase('/')}?item=${encodeURIComponent(it.id)}`
+
+const shareText = (it: Item) => {
+  const what = it.title || categoryOf(it.category).label
+  const where = it.municipality ? ` (${it.municipality})` : ''
+  return it.giveaway ? `Χαρίζεται: ${what}${where} 🎁` : `Στο πεζοδρόμιο, για όποιον το θέλει: ${what}${where} 🛋️`
+}
+
+const isMobile = () => /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+const canNativeShare = ref(false)
+
+const shareLinks = (it: Item) => {
+  const url = itemUrl(it)
+  const msg = `${shareText(it)}
+${url}`
+  return {
+    whatsapp: `https://wa.me/?text=${encodeURIComponent(msg)}`,
+    viber: `viber://forward?text=${encodeURIComponent(msg)}`,
+    // Στο κινητό ανοίγει το Messenger, στον υπολογιστή η κοινοποίηση του Facebook
+    messenger: isMobile()
+      ? `fb-messenger://share/?link=${encodeURIComponent(url)}`
+      : `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+  }
+}
+
+async function nativeShare(it: Item) {
   try {
-    await navigator.clipboard.writeText(location.href)
+    await navigator.share({ title: 'Γειτονικό', text: shareText(it), url: itemUrl(it) })
+  } catch {}
+}
+
+async function copyLink(it: Item) {
+  try {
+    await navigator.clipboard.writeText(itemUrl(it))
     copied.value = true
   } catch {}
 }
@@ -168,6 +202,7 @@ const directionsUrl = (it: Item) => `https://www.google.com/maps/dir/?api=1&dest
 
 onMounted(async () => {
   votes.value = loadVotes()
+  canNativeShare.value = typeof navigator.share === 'function' && isMobile()
   window.addEventListener('keydown', onKey)
 
   L = (await import('leaflet')).default
@@ -418,7 +453,24 @@ onBeforeUnmount(() => {
             <a :href="withBase(`/istories?item=${encodeURIComponent(selected.id)}#grapse`)" class="gk-btn-soft">
               🎉 Το πήρα! Γράψε την ιστορία
             </a>
-            <button type="button" class="gk-btn-soft" @click="share">{{ copied ? '✓ Αντιγράφηκε' : '🔗 Κοινοποίηση' }}</button>
+          </div>
+
+          <div class="rounded-xl border border-green-200 bg-green-50/60 p-3">
+            <p class="mb-2 text-sm font-medium text-zinc-700">📣 Ξέρεις κάποιον που το χρειάζεται; Μοιράσου το:</p>
+            <button
+              v-if="canNativeShare"
+              type="button"
+              class="mb-2 w-full rounded-lg bg-green-700 px-3 py-2 text-sm font-semibold text-white hover:bg-green-800"
+              @click="nativeShare(selected)"
+            >
+              📤 Μοιράσου
+            </button>
+            <div class="grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
+              <a :href="shareLinks(selected).whatsapp" target="_blank" rel="noopener" class="gk-share bg-[#25D366]">WhatsApp</a>
+              <a :href="shareLinks(selected).viber" class="gk-share bg-[#7360F2]">Viber</a>
+              <a :href="shareLinks(selected).messenger" target="_blank" rel="noopener" class="gk-share bg-[#0866FF]">Messenger</a>
+              <button type="button" class="gk-share bg-zinc-600" @click="copyLink(selected)">{{ copied ? '✓ Αντιγράφηκε' : '🔗 Link' }}</button>
+            </div>
           </div>
         </div>
       </div>
